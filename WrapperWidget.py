@@ -6,10 +6,10 @@
 """
 
 from functools import wraps
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout
-from PyQt5.QtCore import QRect
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton
+from PyQt5.QtCore import QRect, QSize
 
-version = "0.1.2"
+version = "0.1.3"
 
 
 __all__ = ['wrapper_widget']
@@ -24,7 +24,8 @@ def wrapper_widget(foo):
         if hasattr(self, 'config'):
             config_widget(self, self.config)
 
-        format_layout(self, self.layouts)
+        if hasattr(self, 'layouts'):
+            format_layout(self, self.layouts)
 
     return wrapper
 
@@ -73,4 +74,13 @@ def config_widget(self, config):
             print("Переданно нестандартное кол-во параметров ")
 
     if size := config.get('size'):
-        self.setGeometry(QRect(400, 400, size[0], size[1]))
+        if issubclass(self.__class__.__bases__[0], QPushButton):
+            if len(size) == 2:
+                self.setFixedSize(QSize(size[0], size[1]))
+            elif len(size) == 1:
+                if isinstance(size, int):
+                    self.setFixedSize(QSize(size, size))
+                elif isinstance(size, list):
+                    self.setFixedSize(QSize(size[0], size[0]))
+        else:
+            self.setGeometry(QRect(400, 400, size[0], size[1]))
