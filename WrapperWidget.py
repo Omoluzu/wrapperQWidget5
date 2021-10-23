@@ -59,10 +59,18 @@ def format_layout(self, parameters, parent=None):
             parent.addWidget(parameters)
 
 
+class Config:
+
+    @staticmethod
+    def flat(self, value):
+        if issubclass(self.__class__.__bases__[0], QPushButton):
+            self.setFlat(value)
+
+
 def config_widget(self, config):
     """ Установка параметров для виджета и Layout"""
-    if title := config.get('title'):
-        self.setWindowTitle(title)
+    if flat := config.get('flat'):
+        Config.flat(self, flat)
 
     if margin := config.get('margin'):
         if len(margin) == 1:
@@ -84,3 +92,6 @@ def config_widget(self, config):
                     self.setFixedSize(QSize(size[0], size[0]))
         else:
             self.setGeometry(QRect(400, 400, size[0], size[1]))
+
+    if title := config.get('title'):
+        self.setWindowTitle(title)
