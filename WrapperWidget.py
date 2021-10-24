@@ -88,18 +88,8 @@ def config_widget(self, config, parent=None):
             print("Переданно нестандартное кол-во параметров ")
 
     if size := config.get('size'):
-        if issubclass(self.__class__.__bases__[0], QPushButton):
-            if isinstance(size, int):
-                self.setFixedSize(QSize(size, size))
-            else:
-                if len(size) == 2:
-                    self.setFixedSize(QSize(size[0], size[1]))
-                elif len(size) == 1:
-                    self.setFixedSize(QSize(size[0], size[0]))
-        elif issubclass(self, QIcon):
-            ...
-        else:
-            self.setGeometry(QRect(400, 400, size[0], size[1]))
+        from modules.config.Size import set_size
+        set_size(self, size, parent)
 
     if title := config.get('title'):
         self.setWindowTitle(title)
