@@ -8,11 +8,12 @@
 from functools import wraps
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton
 from PyQt5.QtCore import QRect, QSize
+from PyQt5.QtGui import QIcon
 
 version = "0.1.3"
 
 
-__all__ = ['wrapper_widget']
+__all__ = ['wrapper_widget', 'config_widget']
 
 
 def wrapper_widget(foo):
@@ -67,10 +68,15 @@ class Config:
             self.setFlat(value)
 
 
-def config_widget(self, config):
+def config_widget(self, config, parent=None):
     """ Установка параметров для виджета и Layout"""
+
     if flat := config.get('flat'):
         Config.flat(self, flat)
+
+    if icon := config.get('icon'):
+        from modules.config.Icon import set_icon
+        set_icon(self, icon, parent, resource=config.get('resource', False))
 
     if margin := config.get('margin'):
         if len(margin) == 1:
@@ -83,13 +89,15 @@ def config_widget(self, config):
 
     if size := config.get('size'):
         if issubclass(self.__class__.__bases__[0], QPushButton):
-            if len(size) == 2:
-                self.setFixedSize(QSize(size[0], size[1]))
-            elif len(size) == 1:
-                if isinstance(size, int):
-                    self.setFixedSize(QSize(size, size))
-                elif isinstance(size, list):
+            if isinstance(size, int):
+                self.setFixedSize(QSize(size, size))
+            else:
+                if len(size) == 2:
+                    self.setFixedSize(QSize(size[0], size[1]))
+                elif len(size) == 1:
                     self.setFixedSize(QSize(size[0], size[0]))
+        elif issubclass(self, QIcon):
+            ...
         else:
             self.setGeometry(QRect(400, 400, size[0], size[1]))
 
