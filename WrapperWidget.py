@@ -88,7 +88,7 @@ def config_widget(self, config, parent=None):
             print("Переданно нестандартное кол-во параметров ")
 
     if size := config.get('size'):
-        from modules.config.Size import set_size
+        from .modules.config.Size import set_size
         set_size(self, size, parent)
 
     if title := config.get('title'):

@@ -16,6 +16,7 @@ def set_size(self, value, parent=None):
                 self.setFixedSize(QSize(value[0], value[0]))
 
     elif issubclass(self, QIcon):
+
         if issubclass(parent.__class__.__bases__[0], QPushButton):
             if isinstance(value, int):
                 parent.setIconSize(QSize(value, value))
