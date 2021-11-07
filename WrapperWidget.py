@@ -5,15 +5,19 @@
 Обетка для QWidget, для построения элементов layout
 """
 
+import sys
+from pathlib import Path
+
 from functools import wraps
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton
-from PyQt5.QtCore import QRect, QSize
-from PyQt5.QtGui import QIcon
-
-version = "0.1.3"
 
 
+__version__ = "0.1.4"
 __all__ = ['wrapper_widget', 'config_widget']
+
+
+file = Path(__file__).resolve()
+sys.path.append(str(file.parents[1]))
 
 
 def wrapper_widget(foo):
@@ -37,8 +41,7 @@ def format_layout(self, parameters, parent=None):
     if isinstance(parameters, dict):
         for key, value in parameters.items():
             if key == "config":
-                # config_widget(parent if parent else self, value)
-                config_widget(parent, value)
+                config_widget(self=parent, config=value, parent=self)
             else:
                 if key == "vbox":
                     layout = QVBoxLayout()
@@ -71,6 +74,10 @@ class Config:
 def config_widget(self, config, parent=None):
     """ Установка параметров для виджета и Layout"""
 
+    if alignment := config.get('alignment'):
+        from modules.config import set_alignment
+        set_alignment(self, alignment, parent)
+
     if flat := config.get('flat'):
         Config.flat(self, flat)
 
@@ -82,7 +89,6 @@ def config_widget(self, config, parent=None):
         if len(margin) == 1:
             self.setContentsMargins(margin[0], margin[0], margin[0], margin[0])
         elif len(margin) == 4:
-            print(margin)
             self.setContentsMargins(margin[0], margin[1], margin[2], margin[3])
         else:
             print("Переданно нестандартное кол-во параметров ")
