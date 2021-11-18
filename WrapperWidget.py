@@ -10,6 +10,13 @@ from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton
 from PyQt5.QtCore import QRect, QSize
 from PyQt5.QtGui import QIcon
 
+import sys
+from pathlib import Path
+
+file = Path(__file__).resolve()
+sys.path.append(str(file.parents[1]))
+
+
 version = "0.1.3"
 
 
@@ -88,7 +95,7 @@ def config_widget(self, config, parent=None):
             print("Переданно нестандартное кол-во параметров ")
 
     if size := config.get('size'):
-        from .modules.config.Size import set_size
+        from modules.config.Size import set_size
         set_size(self, size, parent)
 
     if title := config.get('title'):
