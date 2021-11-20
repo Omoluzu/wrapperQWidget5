@@ -69,7 +69,7 @@ def format_layout(self, parameters, parent=None):
                     warnings.warn(f"{self.__class__.__bases__[0]}, {parent}: то с чем я еще не работаю")
 
     else:
-        if isinstance(parameters, QGridLayout):
+        if isinstance(parameters, (QGridLayout, QHBoxLayout, QVBoxLayout)):
             parent.addLayout(parameters)
         else:
             parent.addWidget(parameters)
