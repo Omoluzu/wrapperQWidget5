@@ -6,13 +6,14 @@
 """
 
 import sys
+import warnings
 from pathlib import Path
 
 from functools import wraps
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QMainWindow
 
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -43,18 +44,29 @@ def format_layout(self, parameters, parent=None):
             if key == "config":
                 config_widget(self=parent, config=value, parent=self)
             else:
+                layout = None
                 if key == "vbox":
                     layout = QVBoxLayout()
                 elif key == "hbox":
                     layout = QHBoxLayout()
+                elif key == "group":
+                    layout = QGroupBox()
 
-                for param in value:
-                    format_layout(self=self, parameters=param, parent=layout)
+                if isinstance(value, list):
+                    for param in value:
+                        format_layout(self=self, parameters=param, parent=layout)
 
-                if isinstance(parent, QVBoxLayout) or isinstance(parent, QHBoxLayout):
+                if isinstance(layout, QGroupBox):
+                    format_layout(self=layout, parameters=parameters['group'], parent=self)
+                    parent.addWidget(layout)
+                elif isinstance(parent, QVBoxLayout) or isinstance(parent, QHBoxLayout):
                     parent.addLayout(layout)
-                else:
+                elif isinstance(parent, QGroupBox):
+                    format_layout(self=self, parameters=parameters, parent=layout)
+                elif issubclass(self.__class__.__bases__[0], QWidget):
                     self.setLayout(layout)
+                else:
+                    warnings.warn(f"{self.__class__.__bases__[0]}, {parent}: то с чем я еще не работаю")
 
     else:
         if isinstance(parameters, QGridLayout):
@@ -98,4 +110,5 @@ def config_widget(self, config, parent=None):
         set_size(self, size, parent)
 
     if title := config.get('title'):
-        self.setWindowTitle(title)
+        from modules.config.Title import set_title
+        set_title(self, title, parent)
