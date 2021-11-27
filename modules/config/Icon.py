@@ -15,7 +15,7 @@ def set_icon(self, value, parent=None, resource=False):
             if resource:
                 parent.setIcon(QIcon(f":/{value}"))
             else:
-                warnings.warn(f"set_icon. Данный параметр еще не реализован")
+                parent.setIcon(QIcon(value))
         else:
             warnings.warn(f"set_icon. Данный параметр еще не реализован")
     else:
