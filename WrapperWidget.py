@@ -5,20 +5,19 @@
 Обетка для QWidget, для построения элементов layout
 """
 
-import sys
 import warnings
-from pathlib import Path
 
 from functools import wraps
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QMainWindow
 
+try:
+    from modules.config import *
+except ModuleNotFoundError:
+    from .modules.config import *
 
-__version__ = "0.1.5"
+
+__version__ = "0.1.6"
 __all__ = ['wrapper_widget', 'config_widget']
-
-
-file = Path(__file__).resolve()
-sys.path.append(str(file.parents[1]))
 
 
 def wrapper_widget(foo):
@@ -87,14 +86,14 @@ def config_widget(self, config, parent=None):
     """ Установка параметров для виджета и Layout"""
 
     if alignment := config.get('alignment'):
-        from modules.config import set_alignment
+        # from modules.config import set_alignment
         set_alignment(self, alignment, parent)
 
     if flat := config.get('flat'):
         Config.flat(self, flat)
 
     if icon := config.get('icon'):
-        from modules.config.Icon import set_icon
+        # from modules.config.Icon import set_icon
         set_icon(self, icon, parent, resource=config.get('resource', False))
 
     if margin := config.get('margin'):
@@ -106,9 +105,9 @@ def config_widget(self, config, parent=None):
             print("Переданно нестандартное кол-во параметров ")
 
     if size := config.get('size'):
-        from modules.config.Size import set_size
+        # from modules.config.Size import set_size
         set_size(self, size, parent)
 
     if title := config.get('title'):
-        from modules.config.Title import set_title
+        # from modules.config.Title import set_title
         set_title(self, title, parent)
