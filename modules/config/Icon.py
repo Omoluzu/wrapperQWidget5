@@ -5,7 +5,10 @@ from PyQt5.QtGui import QIcon
 
 
 def set_icon(self, value, parent=None, resource=False):
-    from WrapperWidget import config_widget
+    try:
+        from WrapperWidget import config_widget
+    except ModuleNotFoundError:
+        from ...WrapperWidget import config_widget
 
     if isinstance(value, dict):
         config_widget(QIcon, value, parent=self)
