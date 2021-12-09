@@ -1,6 +1,6 @@
 import warnings
 
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QWidget
 from PyQt5.QtGui import QIcon
 
 
@@ -11,15 +11,14 @@ def set_icon(self, value, parent=None, resource=False):
         from ...WrapperWidget import config_widget
 
     if isinstance(value, dict):
-        config_widget(QIcon, value, parent=self)
+        config_widget(QIcon, value, parent=self if self else parent)
 
     elif parent:
         if issubclass(parent.__class__.__bases__[0], QPushButton):
-            if resource:
-                parent.setIcon(QIcon(f":/{value}"))
-            else:
-                parent.setIcon(QIcon(value))
+            parent.setIcon(QIcon(f":/{value}" if resource else value))
+        elif issubclass(parent.__class__.__bases__[0], QWidget):
+            parent.setWindowIcon(QIcon(f":/{value}" if resource else value))
         else:
-            warnings.warn(f"set_icon. Данный параметр еще не реализован")
+            warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
     else:
-        warnings.warn(f"set_icon. Данный параметр еще не реализован")
+        warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
