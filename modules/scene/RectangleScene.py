@@ -4,6 +4,8 @@ from PyQt5.QtGui import QPolygonF, QPixmap
 
 from . import ElementScene
 
+__version__ = "0.0.1"
+
 
 class RectangleScene(ElementScene):
     """
@@ -36,9 +38,9 @@ class RectangleScene(ElementScene):
         return self.point[1] + (self.height * self.bias[1])
 
     def set_image(self, path, bias=(0, 0)):
-        self.__pixmap = QGraphicsPixmapItem(QPixmap(path))
-        self.scene.addItem(self.__pixmap)
-        self.__pixmap.setPos(
+        self._pixmap = QGraphicsPixmapItem(QPixmap(path))
+        self.scene.addItem(self._pixmap)
+        self._pixmap.setPos(
             self.start_point_x - self.width / 2 + bias[0],
             self.start_point_y - self.height / 2 + bias[1]
         )
