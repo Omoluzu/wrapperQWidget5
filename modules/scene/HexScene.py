@@ -65,9 +65,9 @@ class HexagonScene(ElementScene):
         Начальная тоска текущего шестиугольника и начальная точка изображения отличаются координатами.
         """
 
-        self.__pixmap = QGraphicsPixmapItem(QPixmap(path))
-        self.scene.addItem(self.__pixmap)
-        self.__pixmap.setPos(
+        self._pixmap = QGraphicsPixmapItem(QPixmap(path))
+        self.scene.addItem(self._pixmap)
+        self._pixmap.setPos(
             self.start_point_x - self.radius + bias[0],
             self.start_point_y - (self.radius * math.sin(self.angle + 2 * math.pi * 1 / self.sides)) + bias[1]
         )

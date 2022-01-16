@@ -8,7 +8,7 @@ class ElementScene(QGraphicsPolygonItem):
     type: str = 'ElementScene'
     scene: 'QGraphicsScene'  # Основная сцена
     image: str = None  # Путь до изображения. Если он есть то оно будет отрисованно
-    __pixmap: QGraphicsPixmapItem = None  # ...
+    _pixmap: QGraphicsPixmapItem = None  # ...
 
     def __init__(self, scene=None, bias=(0, 0), point=(0, 0)):
         super().__init__()
@@ -42,8 +42,8 @@ class ElementScene(QGraphicsPolygonItem):
 
     def remove_item(self):
         """ Удаление текущего элемента """
-        if self.__pixmap:
-            self.scene.removeItem(self.__pixmap)
+        if self._pixmap:
+            self.scene.removeItem(self._pixmap)
 
         self.scene.removeItem(self)
 
