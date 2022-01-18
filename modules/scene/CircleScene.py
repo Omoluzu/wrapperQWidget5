@@ -13,8 +13,8 @@ class CircleScene(ElementScene, QGraphicsEllipseItem):
     def draw(self):
         """ Отрисовка элемнета """
         self.setRect(QRectF(
-            -self.radius,
-            -self.radius,
+            self.start_point_x - self.radius,
+            self.start_point_y - self.radius,
             self.diameter,
             self.diameter
         ))
@@ -25,7 +25,7 @@ class CircleScene(ElementScene, QGraphicsEllipseItem):
 
     @property
     def start_point_y(self):
-        return self.point[0] + (self.diameter * self.bias[0])
+        return self.point[1] + (self.diameter * self.bias[1])
 
     @property
     def radius(self):
@@ -35,6 +35,6 @@ class CircleScene(ElementScene, QGraphicsEllipseItem):
         _pixmap = QGraphicsPixmapItem(QPixmap(path))
         self.scene.addItem(_pixmap)
         _pixmap.setPos(
-            -self.radius,
-            -self.radius
+            self.start_point_x - self.radius,
+            self.start_point_y - self.radius
         )
