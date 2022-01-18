@@ -1,5 +1,5 @@
 
-from PyQt5.QtWidgets import QGraphicsPixmapItem
+from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsPolygonItem
 from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QPolygonF, QPixmap
 
@@ -10,7 +10,7 @@ import math
 __version__ = "0.0.1"
 
 
-class HexagonScene(ElementScene):
+class HexagonScene(ElementScene, QGraphicsPolygonItem):
     """
     Шестиугольный элемента сцены
     """

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGraphicsPixmapItem
+from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsPolygonItem
 from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QPolygonF, QPixmap
 
@@ -7,7 +7,7 @@ from . import ElementScene
 __version__ = "0.0.1"
 
 
-class RectangleScene(ElementScene):
+class RectangleScene(ElementScene, QGraphicsPolygonItem):
     """
     Прямоугольник элемента сцены
     """
