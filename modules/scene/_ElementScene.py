@@ -1,14 +1,15 @@
-from PyQt5.QtWidgets import QGraphicsPolygonItem, QGraphicsPixmapItem
-from abc import abstractmethod
+# from PyQt5.QtWidgets import QGraphicsPolygonItem
+from PyQt5.QtWidgets import *
+from abc import abstractmethod, ABC
 
 __version__ = "0.0.1"
 
 
-class ElementScene(QGraphicsPolygonItem):
+class ElementScene:
     type: str = 'ElementScene'
     scene: 'QGraphicsScene'  # Основная сцена
     image: str = None  # Путь до изображения. Если он есть то оно будет отрисованно
-    _pixmap: QGraphicsPixmapItem = None  # ...
+    _pixmap: 'QGraphicsPixmapItem' = None  # ...
 
     def __init__(self, scene=None, bias=(0, 0), point=(0, 0)):
         super().__init__()
