@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     from .modules.config import *
 
 
-__version__ = "0.1.6"
+__version__ = "0.2.3"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
