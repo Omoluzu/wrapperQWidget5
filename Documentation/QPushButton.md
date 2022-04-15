@@ -1,6 +1,24 @@
 ### QPushButton
 
 Параметры который использует виджет **QPushButton**
+Пример создания: 
+```python
+class WrapperButton(QPushButton):  
+  
+    @wrapper_widget  
+    def __init__(self):  
+        super().__init__()  
+  
+        self.config = {  
+            'size': 50,  
+            'flat': True,  
+            'icon': {  
+                "icon": "ico/check.png",  
+                "size": 50  
+            }  
+        }
+```
+
 
 &nbsp;
 ###### flat:

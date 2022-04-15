@@ -8,7 +8,7 @@
 import warnings
 
 from functools import wraps
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QMainWindow
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox
 
 try:
     from modules.config import *
@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     from .modules.config import *
 
 
-__version__ = "0.2.3"
+__version__ = "0.2.4"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -58,7 +58,7 @@ def format_layout(self, parameters, parent=None):
                 if isinstance(layout, QGroupBox):
                     format_layout(self=layout, parameters=parameters['group'], parent=self)
                     parent.addWidget(layout)
-                elif isinstance(parent, QVBoxLayout) or isinstance(parent, QHBoxLayout):
+                elif isinstance(parent, (QHBoxLayout, QVBoxLayout)):
                     parent.addLayout(layout)
                 elif isinstance(parent, QGroupBox):
                     format_layout(self=self, parameters=parameters, parent=layout)
