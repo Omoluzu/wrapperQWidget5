@@ -54,6 +54,9 @@ def format_layout(self, parameters, parent=None):
                 if isinstance(value, list):
                     for param in value:
                         format_layout(self=self, parameters=param, parent=layout)
+                else:
+                    if isinstance(layout, (QHBoxLayout, QVBoxLayout)):
+                        warnings.warn(f"{layout}: неправильный тип данных: {type(value)}, != list")
 
                 if isinstance(layout, QGroupBox):
                     format_layout(self=layout, parameters=parameters['group'], parent=self)
