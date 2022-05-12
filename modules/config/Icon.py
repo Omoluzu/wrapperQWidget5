@@ -1,4 +1,5 @@
 import warnings
+import os
 
 from PyQt5.QtWidgets import QPushButton, QWidget
 from PyQt5.QtGui import QIcon
@@ -14,11 +15,14 @@ def set_icon(self, value, parent=None, resource=False):
         config_widget(QIcon, value, parent=self if self else parent)
 
     elif parent:
-        if issubclass(parent.__class__.__bases__[0], QPushButton):
-            parent.setIcon(QIcon(f":/{value}" if resource else value))
-        elif issubclass(parent.__class__.__bases__[0], QWidget):
-            parent.setWindowIcon(QIcon(f":/{value}" if resource else value))
+        if not os.path.isfile(value):
+            warnings.warn(f"Не найдена иконка по указанному пути = {os.path.abspath(value)}")
         else:
-            warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
+            if issubclass(parent.__class__.__bases__[0], QPushButton):
+                parent.setIcon(QIcon(f":/{value}" if resource else value))
+            elif issubclass(parent.__class__.__bases__[0], QWidget):
+                parent.setWindowIcon(QIcon(f":/{value}" if resource else value))
+            else:
+                warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
     else:
         warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")

@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import *
 from abc import abstractmethod, ABC
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 class ElementScene:
@@ -48,6 +48,31 @@ class ElementScene:
 
         self.scene.removeItem(self)
 
+    def move_item(self, new_point, deactivated=True):
+        self.remove_item()
+
+        self.point = (
+            new_point.start_point_x,
+            new_point.start_point_y
+        )
+        self.bias = (0, 0)
+
+        self.draw()
+        if self.image:
+            self.set_image(path=self.image)
+
+        if deactivated:
+            self.deactivated()
+
     def mousePressEvent(self, event):
         """ Отработка нажатия мыши на текущий элемент """
+        if self.scene.active == self:
+            self.deactivated()
+        else:
+            self.activated()
+
+    def activated(self):
+        pass
+
+    def deactivated(self):
         pass
