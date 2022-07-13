@@ -8,7 +8,7 @@
 import warnings
 
 from functools import wraps
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QButtonGroup
 
 try:
     from modules.config import *
@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     from .modules.config import *
 
 
-__version__ = "0.2.4"
+__version__ = "0.2.5"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -37,6 +37,7 @@ def wrapper_widget(foo):
 
 def format_layout(self, parameters, parent=None):
     """ """
+    # print(self, parameters, parent)
 
     if isinstance(parameters, dict):
         for key, value in parameters.items():
@@ -50,6 +51,8 @@ def format_layout(self, parameters, parent=None):
                     layout = QHBoxLayout()
                 elif key == "group":
                     layout = QGroupBox()
+                # elif key == "group_button":
+                #     group_button(key=key, value=value, self=self, parent=parent)
 
                 if isinstance(value, list):
                     for param in value:
@@ -83,6 +86,20 @@ class Config:
     def flat(self, value):
         if issubclass(self.__class__.__bases__[0], QPushButton):
             self.setFlat(value)
+
+
+# def group_button(key, value, self, parent):
+#     print(f"{key=}")
+#     print(f"{value=}")
+#     print(f"{self=}")
+#     print(f"{parent=}")
+#
+#     button_group = QButtonGroup()
+#     button_group.buttonClicked[int].connect(value['action'])
+#     for i, name_button in enumerate(value['items']):
+#         button = QPushButton(name_button)
+#         button_group.addButton(button, i)
+#         parent.addWidget(button)
 
 
 def config_widget(self, config, parent=None):

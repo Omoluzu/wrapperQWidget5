@@ -15,7 +15,7 @@ def set_icon(self, value, parent=None, resource=False):
         config_widget(QIcon, value, parent=self if self else parent)
 
     elif parent:
-        if not os.path.isfile(value):
+        if not os.path.isfile(value) and not resource:
             warnings.warn(f"Не найдена иконка по указанному пути = {os.path.abspath(value)}")
         else:
             if issubclass(parent.__class__.__bases__[0], QPushButton):
@@ -23,6 +23,6 @@ def set_icon(self, value, parent=None, resource=False):
             elif issubclass(parent.__class__.__bases__[0], QWidget):
                 parent.setWindowIcon(QIcon(f":/{value}" if resource else value))
             else:
-                warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
+                warnings.warn(f"Указан параметр icon для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
     else:
-        warnings.warn(f"Указан параметр title для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
+        warnings.warn(f"Указан параметр icon для непределенного параметра: {parent=}, {self=}, title={value}, {resource=}")
