@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     from .modules.config import *
 
 
-__version__ = "0.2.5"
+__version__ = "0.2.6"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -131,3 +131,6 @@ def config_widget(self, config, parent=None):
     if title := config.get('title'):
         # from modules.config.Title import set_title
         set_title(self, title, parent)
+
+    if column := config.get('column'):
+        set_column(self, column, parent)
