@@ -1,7 +1,16 @@
 ### QPushButton
 
 Параметры который использует виджет **QPushButton**
-Пример создания: 
+
+**Оглавление:**
+- [пример](#Пример)
+- [action](#action)
+- [flat](#flat)
+- [icon](#icon)
+- [size](#size)
+
+
+###### Пример: 
 ```python
 class WrapperButton(QPushButton):  
   
@@ -21,6 +30,24 @@ class WrapperButton(QPushButton):
 
 
 &nbsp;
+###### action:
+Активация нажатия на кнопку. В качестве арумента принмает экземпляр функции.
+Пример:
+```python
+class WrapperButton(QPushButton):  
+    @wrapper_widget  
+    def __init__(self):  
+        super().__init__()  
+        self.config = {  
+            'action': self.action_cliked,  
+        }
+	
+	def action_cliked(self):  
+    	print("Click WrapperButton")
+```
+
+
+&nbsp;
 ###### flat:
 Если стоит флаг `True`, то большинство стилей не будут рисовать фон кнопки. По умолчанию стоит флаг `False`
 
@@ -31,7 +58,7 @@ class WrapperButton(QPushButton):
 
 &nbsp;
 ###### icon:
-Является инсрукцией для установки иконки.  
+Является инструкцией для установки иконки.  
 Параметры инструкции смотреть в [`QIcon`](QIcon.md)
 
 ***Пример использования: ***

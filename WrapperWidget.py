@@ -105,6 +105,9 @@ class Config:
 def config_widget(self, config, parent=None):
     """ Установка параметров для виджета и Layout"""
 
+    if action := config.get('action'):
+        set_action(self, action, parent)
+
     if alignment := config.get('alignment'):
         set_alignment(self, alignment, parent)
 
