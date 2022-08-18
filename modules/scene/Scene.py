@@ -2,17 +2,25 @@
 from PyQt5.QtWidgets import QGraphicsScene, QGraphicsView, QDesktopWidget
 from PyQt5.QtCore import QRect
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 
 class Scene(QGraphicsScene):
     draw_sketch = False
 
-    def __init__(self, widget, size=(0, 0)):
-        super().__init__(widget)
-        self.active = None
+    def __init__(self, app, size=(0, 0)):
+        """
 
-        self.board = QGraphicsView(widget)
+        init version 0.0.1
+        update version 0.0.2
+            - Входящий параметр сменен с widget на app
+        """
+        super().__init__(app.widget)
+
+        self.app = app
+        self.active = None
+        self.board = QGraphicsView(app.widget)
+
         if size == (0, 0):
             self.board.setGeometry(QDesktopWidget().screenGeometry())
         else:
@@ -29,3 +37,4 @@ class Scene(QGraphicsScene):
 
     def sketch(self):
         pass
+
