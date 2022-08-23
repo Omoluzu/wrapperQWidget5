@@ -1,6 +1,7 @@
-# from PyQt5.QtWidgets import QGraphicsPolygonItem
+import os
+
 from PyQt5.QtWidgets import *
-from abc import abstractmethod, ABC
+from abc import abstractmethod
 
 __version__ = "0.0.2"
 
@@ -11,7 +12,7 @@ class ElementScene:
     image: str = None  # Путь до изображения. Если он есть то оно будет отрисованно
     _pixmap: 'QGraphicsPixmapItem' = None  # ...
 
-    def __init__(self, scene=None, bias=(0, 0), point=(0, 0)):
+    def __init__(self, scene=None, bias=(0, 0), point=(0, 0), *args, **kwargs):
         super().__init__()
         self.scene = scene
         self.point = point
@@ -20,6 +21,8 @@ class ElementScene:
         self.draw()
 
         if self.image:
+            print(os.path.exists(self.image))
+
             self.set_image(path=self.image)
 
     @abstractmethod
