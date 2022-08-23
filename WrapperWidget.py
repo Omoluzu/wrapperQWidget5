@@ -16,7 +16,7 @@ except ModuleNotFoundError:
     from .modules.config import *
 
 
-__version__ = "0.2.6"
+__version__ = "0.2.7"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -37,41 +37,48 @@ def wrapper_widget(foo):
 
 def format_layout(self, parameters, parent=None):
     """ """
-    # print(self, parameters, parent)
+    # print(f"{self=}", f"{parameters=}", f"{parent=}")
 
     if isinstance(parameters, dict):
         for key, value in parameters.items():
-            if key == "config":
-                config_widget(self=parent, config=value, parent=self)
-            else:
-                layout = None
-                if key == "vbox":
-                    layout = QVBoxLayout()
-                elif key == "hbox":
-                    layout = QHBoxLayout()
-                elif key == "group":
-                    layout = QGroupBox()
-                # elif key == "group_button":
-                #     group_button(key=key, value=value, self=self, parent=parent)
+            match key:
+                case "config":
+                    config_widget(self=parent, config=value, parent=self)
+                case "menu":
+                    menu_bar(self, parameters)
+                case _:
+                    layout = None
+                    match key:
+                        case "vbox":
+                            layout = QVBoxLayout()
+                        case "hbox":
+                            layout = QHBoxLayout()
+                        case "group":
+                            layout = QGroupBox()
+                        # case "group_button":
+                        #     group_button(key=key, value=value, self=self, parent=parent)
+                        case _:
+                            warnings.warn(f"Пришел незнакомый ключ {key}")
+                            continue
 
-                if isinstance(value, list):
-                    for param in value:
-                        format_layout(self=self, parameters=param, parent=layout)
-                else:
-                    if isinstance(layout, (QHBoxLayout, QVBoxLayout)):
-                        warnings.warn(f"{layout}: неправильный тип данных: {type(value)}, != list")
+                    if isinstance(value, list):
+                        for param in value:
+                            format_layout(self=self, parameters=param, parent=layout)
+                    else:
+                        if isinstance(layout, (QHBoxLayout, QVBoxLayout)):
+                            warnings.warn(f"{layout}: неправильный тип данных: {type(value)}, != list")
 
-                if isinstance(layout, QGroupBox):
-                    format_layout(self=layout, parameters=parameters['group'], parent=self)
-                    parent.addWidget(layout)
-                elif isinstance(parent, (QHBoxLayout, QVBoxLayout)):
-                    parent.addLayout(layout)
-                elif isinstance(parent, QGroupBox):
-                    format_layout(self=self, parameters=parameters, parent=layout)
-                elif issubclass(self.__class__.__bases__[0], QWidget):
-                    self.setLayout(layout)
-                else:
-                    warnings.warn(f"{self.__class__.__bases__[0]}, {parent}: то с чем я еще не работаю")
+                    if isinstance(layout, QGroupBox):
+                        format_layout(self=layout, parameters=parameters['group'], parent=self)
+                        parent.addWidget(layout)
+                    elif isinstance(parent, (QHBoxLayout, QVBoxLayout)):
+                        parent.addLayout(layout)
+                    elif isinstance(parent, QGroupBox):
+                        format_layout(self=self, parameters=parameters, parent=layout)
+                    elif issubclass(self.__class__.__bases__[0], QWidget) and layout:
+                        self.setLayout(layout)
+                    else:
+                        warnings.warn(f"{self.__class__.__bases__[0]}, {parent=}: то с чем я еще не работаю")
 
     else:
         if isinstance(parameters, (QGridLayout, QHBoxLayout, QVBoxLayout)):
@@ -86,6 +93,17 @@ class Config:
     def flat(self, value):
         if issubclass(self.__class__.__bases__[0], QPushButton):
             self.setFlat(value)
+
+
+def menu_bar(self: 'QMainWindow', parameters: dict):
+    """
+    Установка меню через WrapperWidget
+
+    self = QMainWindow
+    parameters = {'menu': <class '__main__.WrapperMenu'>}
+    """
+    self.menu = parameters['menu']()
+    self.setMenuBar(self.menu)
 
 
 # def group_button(key, value, self, parent):
