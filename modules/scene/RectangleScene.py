@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPolygonF, QPixmap
 
 from . import ElementScene
 
-__version__ = "0.0.1"
+__version__ = "0.0.3"
 
 
 class RectangleScene(ElementScene, QGraphicsPolygonItem):
@@ -28,6 +28,8 @@ class RectangleScene(ElementScene, QGraphicsPolygonItem):
                 ]
             )
         )
+
+        self.scene.addItem(self)
 
     @property
     def start_point_x(self):
