@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QGraphicsPixmapItem, QGraphicsPolygonItem
-from PyQt5.QtCore import QPointF
+from PyQt5.QtCore import QPointF, QSize
 from PyQt5.QtGui import QPolygonF, QPixmap
 
 from . import ElementScene
@@ -39,10 +39,14 @@ class RectangleScene(ElementScene, QGraphicsPolygonItem):
     def start_point_y(self):
         return self.point[1] + (self.height * self.bias[1])
 
-    def set_image(self, path, bias=(0, 0)):
-        self._pixmap = QGraphicsPixmapItem(QPixmap(path))
-        self.scene.addItem(self._pixmap)
-        self._pixmap.setPos(
+    def set_image(self, path, bias=(0, 0), scaled=True):
+        pixmap = QPixmap(path)
+        if scaled:
+            pixmap = pixmap.scaled(QSize(self.width, self.height))
+
+        pixmap_item = QGraphicsPixmapItem(pixmap)
+        self.scene.addItem(pixmap_item)
+        pixmap_item.setPos(
             self.start_point_x - self.width / 2 + bias[0],
             self.start_point_y - self.height / 2 + bias[1]
         )

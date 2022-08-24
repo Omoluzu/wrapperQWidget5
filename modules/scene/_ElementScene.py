@@ -10,7 +10,6 @@ class ElementScene:
     type: str = 'ElementScene'
     scene: 'QGraphicsScene'  # Основная сцена
     image: str = None  # Путь до изображения. Если он есть то оно будет отрисованно
-    _pixmap: 'QGraphicsPixmapItem' = None  # ...
 
     def __init__(self, scene=None, bias=(0, 0), point=(0, 0), *args, **kwargs):
         super().__init__()
@@ -21,8 +20,8 @@ class ElementScene:
         self.draw()
 
         if self.image:
-            if not os.path.exists(self.image):
-                warnings.warn(f"Не найденн файл с изображением {self.image}")
+            if not os.path.exists(self.image) and not self.image.startswith(":/"):
+                warnings.warn(f"Не найден файл с изображением {self.image}")
 
             self.set_image(path=self.image)
 
@@ -31,7 +30,7 @@ class ElementScene:
         """ Отрисовка элемнета """
         pass
 
-    def set_image(self, path, bias=(0, 0)):
+    def set_image(self, path, bias=(0, 0), scaled=True):
         """ Установка изображения на Элемент """
         pass
 
