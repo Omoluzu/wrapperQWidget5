@@ -1,6 +1,6 @@
 import os
+import warnings
 
-from PyQt5.QtWidgets import *
 from abc import abstractmethod
 
 __version__ = "0.0.2"
@@ -21,7 +21,8 @@ class ElementScene:
         self.draw()
 
         if self.image:
-            print(os.path.exists(self.image))
+            if not os.path.exists(self.image):
+                warnings.warn(f"Не найденн файл с изображением {self.image}")
 
             self.set_image(path=self.image)
 
