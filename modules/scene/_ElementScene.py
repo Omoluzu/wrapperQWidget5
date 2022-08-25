@@ -11,6 +11,7 @@ class ElementScene:
     type: str = 'ElementScene'
     scene: 'QGraphicsScene'  # Основная сцена
     image: str = None  # Путь до изображения. Если он есть то оно будет отрисованно
+    _pixmap: 'QGraphicsPolygonItem' = None
 
     def __init__(self, scene=None, bias=(0, 0), point=(0, 0), *args, **kwargs):
         super().__init__()
