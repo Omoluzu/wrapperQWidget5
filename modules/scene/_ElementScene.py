@@ -2,8 +2,9 @@ import os
 import warnings
 
 from abc import abstractmethod
+from PyQt5.QtGui import QPen, QColor
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 class ElementScene:
@@ -79,3 +80,16 @@ class ElementScene:
 
     def deactivated(self):
         pass
+
+    def set_border(self, color='Black', border=1) -> None:
+        """
+        Description:
+            Установка цвета и размера границ элемента
+
+        Parameters:
+            ::color (str) - цвет границы. По умолчанию черный
+            ::border (int) - размер границы. По умолчанию 1
+
+        init version 0.0.3
+        """
+        self.setPen(QPen(QColor(color), border))
