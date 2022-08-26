@@ -53,14 +53,19 @@ class ElementScene:
 
         self.scene.removeItem(self)
 
-    def move_item(self, new_point, deactivated=True):
+    def move_item(self, new_point=None, new_bias=None, deactivated=True):
         self.remove_item()
 
-        self.point = (
-            new_point.start_point_x,
-            new_point.start_point_y
-        )
+        self.point = (0, 0)
         self.bias = (0, 0)
+
+        if new_point:
+            self.point = (
+                new_point.start_point_x,
+                new_point.start_point_y
+            )
+        if new_bias:
+            self.bias = new_bias
 
         self.draw()
         if self.image:
@@ -68,6 +73,10 @@ class ElementScene:
 
         if deactivated:
             self.deactivated()
+
+    # def move(self, bias=None):
+        # if bias:
+        #     self.bias = bias
 
     def mousePressEvent(self, event):
         """ Отработка нажатия мыши на текущий элемент """
