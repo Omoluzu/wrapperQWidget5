@@ -1,4 +1,5 @@
 import os
+import time
 import warnings
 
 from abc import abstractmethod
@@ -73,10 +74,6 @@ class ElementScene:
 
         if deactivated:
             self.deactivated()
-
-    # def move(self, bias=None):
-        # if bias:
-        #     self.bias = bias
 
     def mousePressEvent(self, event):
         """ Отработка нажатия мыши на текущий элемент """
