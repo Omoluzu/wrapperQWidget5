@@ -17,7 +17,7 @@ except ModuleNotFoundError:
     from .modules.config import *
 
 
-__version__ = "0.2.7"
+__version__ = "0.2.8"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -85,7 +85,7 @@ def format_layout(self, parameters, parent=None):
         if isinstance(parameters, (QGridLayout, QHBoxLayout, QVBoxLayout)):
             parent.addLayout(parameters)
         elif isinstance(parameters, QSpacerItem):
-            parent.addItem(parameters)  # Fixme version: добавленна возможность добавления QSpacerItem в QLayout
+            parent.addItem(parameters)
         else:
             parent.addWidget(parameters)
 
