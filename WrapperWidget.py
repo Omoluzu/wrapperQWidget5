@@ -8,7 +8,8 @@
 import warnings
 
 from functools import wraps
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QButtonGroup
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QButtonGroup, \
+    QSpacerItem
 
 try:
     from modules.config import *
@@ -83,6 +84,8 @@ def format_layout(self, parameters, parent=None):
     else:
         if isinstance(parameters, (QGridLayout, QHBoxLayout, QVBoxLayout)):
             parent.addLayout(parameters)
+        elif isinstance(parameters, QSpacerItem):
+            parent.addItem(parameters)  # Fixme version: добавленна возможность добавления QSpacerItem в QLayout
         else:
             parent.addWidget(parameters)
 
