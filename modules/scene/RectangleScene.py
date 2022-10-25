@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPolygonF, QPixmap
 
 from . import ElementScene
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 class RectangleScene(ElementScene, QGraphicsPolygonItem):
@@ -39,10 +39,18 @@ class RectangleScene(ElementScene, QGraphicsPolygonItem):
     def start_point_y(self):
         return self.point[1] + (self.height * self.bias[1])
 
-    def set_image(self, path, bias=(0, 0), scaled=True):
+    def set_image(self, path, bias=(0, 0), scaled=True, scaled_size=None):
+        """
+
+        update version 0.0.4:
+            - Добавлен необязательный атрибут scaled_size для указания новых размеров изображения.
+        """
         pixmap = QPixmap(path)
         if scaled:
-            pixmap = pixmap.scaled(QSize(self.width, self.height))
+            if not scaled_size:
+                pixmap = pixmap.scaled(QSize(int(self.width), int(self.height)))
+            else:
+                pixmap = pixmap.scaled(QSize(int(scaled_size[0]), int(scaled_size[1])))
 
         self._pixmap = QGraphicsPixmapItem(pixmap)
         self.scene.addItem(self._pixmap)
