@@ -14,6 +14,8 @@ try:
     from modules.config import *
 except ModuleNotFoundError:
     from .modules.config import *
+except ImportError:
+    from .modules.config import *
 
 
 __version__ = "0.2.5"
