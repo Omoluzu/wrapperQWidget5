@@ -42,6 +42,8 @@ class RectangleScene(ElementScene, QGraphicsPolygonItem):
     def set_image(self, path, bias=(0, 0), scaled=True, scaled_size=None):
         """
 
+        update version 0.0.3:
+            - Добавлен необязательный атрибут scaled.
         update version 0.0.4:
             - Добавлен необязательный атрибут scaled_size для указания новых размеров изображения.
         """

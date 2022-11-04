@@ -8,7 +8,7 @@ __version__ = "0.0.2"
 class Scene(QGraphicsScene):
     draw_sketch = False
 
-    def __init__(self, app, size=(0, 0)):
+    def __init__(self, app, size: tuple = (0, 0)):
         """
 
         init version 0.0.1

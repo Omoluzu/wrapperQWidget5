@@ -9,6 +9,11 @@ __version__ = "0.0.3"
 
 
 class ElementScene:
+    """
+
+    update version 0.0.2:
+        - Вывод информационного сообщения если не найдено изображение по укаанному в self.image пути
+    """
     type: str = 'ElementScene'
     scene: 'QGraphicsScene'  # Основная сцена
     image: str = None  # Путь до изображения. Если он есть то оно будет отрисованно
@@ -55,6 +60,12 @@ class ElementScene:
         self.scene.removeItem(self)
 
     def move_item(self, new_point=None, new_bias=None, deactivated=True):
+        """
+
+        update version:
+            - параметр new_point стал опциональным
+            - Добавлен параметр new_bias. Для указание позиции новой позиции.
+        """
         self.remove_item()
 
         self.point = (0, 0)
@@ -88,7 +99,7 @@ class ElementScene:
     def deactivated(self):
         pass
 
-    def set_border(self, color='Black', border=1) -> None:
+    def set_border(self, color: str = 'Black', border: int = 1) -> None:
         """
         Description:
             Установка цвета и размера границ элемента
