@@ -8,7 +8,8 @@
 import warnings
 
 from functools import wraps
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QButtonGroup
+from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton, QWidget, QGroupBox, QButtonGroup, \
+    QSpacerItem
 
 try:
     from modules.config import *
@@ -18,7 +19,7 @@ except ImportError:
     from .modules.config import *
 
 
-__version__ = "0.2.5"
+__version__ = "0.2.8"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
@@ -39,45 +40,54 @@ def wrapper_widget(foo):
 
 def format_layout(self, parameters, parent=None):
     """ """
-    # print(self, parameters, parent)
+    # print(f"{self=}", f"{parameters=}", f"{parent=}")
 
     if isinstance(parameters, dict):
         for key, value in parameters.items():
-            if key == "config":
-                config_widget(self=parent, config=value, parent=self)
-            else:
-                layout = None
-                if key == "vbox":
-                    layout = QVBoxLayout()
-                elif key == "hbox":
-                    layout = QHBoxLayout()
-                elif key == "group":
-                    layout = QGroupBox()
-                # elif key == "group_button":
-                #     group_button(key=key, value=value, self=self, parent=parent)
+            match key:
+                case "config":
+                    config_widget(self=parent, config=value, parent=self)
+                case "menu":
+                    menu_bar(self, parameters)
+                case _:
+                    layout = None
+                    match key:
+                        case "vbox":
+                            layout = QVBoxLayout()
+                        case "hbox":
+                            layout = QHBoxLayout()
+                        case "group":
+                            layout = QGroupBox()
+                        # case "group_button":
+                        #     group_button(key=key, value=value, self=self, parent=parent)
+                        case _:
+                            warnings.warn(f"Пришел незнакомый ключ {key}")
+                            continue
 
-                if isinstance(value, list):
-                    for param in value:
-                        format_layout(self=self, parameters=param, parent=layout)
-                else:
-                    if isinstance(layout, (QHBoxLayout, QVBoxLayout)):
-                        warnings.warn(f"{layout}: неправильный тип данных: {type(value)}, != list")
+                    if isinstance(value, list):
+                        for param in value:
+                            format_layout(self=self, parameters=param, parent=layout)
+                    else:
+                        if isinstance(layout, (QHBoxLayout, QVBoxLayout)):
+                            warnings.warn(f"{layout}: неправильный тип данных: {type(value)}, != list")
 
-                if isinstance(layout, QGroupBox):
-                    format_layout(self=layout, parameters=parameters['group'], parent=self)
-                    parent.addWidget(layout)
-                elif isinstance(parent, (QHBoxLayout, QVBoxLayout)):
-                    parent.addLayout(layout)
-                elif isinstance(parent, QGroupBox):
-                    format_layout(self=self, parameters=parameters, parent=layout)
-                elif issubclass(self.__class__.__bases__[0], QWidget):
-                    self.setLayout(layout)
-                else:
-                    warnings.warn(f"{self.__class__.__bases__[0]}, {parent}: то с чем я еще не работаю")
+                    if isinstance(layout, QGroupBox):
+                        format_layout(self=layout, parameters=parameters['group'], parent=self)
+                        parent.addWidget(layout)
+                    elif isinstance(parent, (QHBoxLayout, QVBoxLayout)):
+                        parent.addLayout(layout)
+                    elif isinstance(parent, QGroupBox):
+                        format_layout(self=self, parameters=parameters, parent=layout)
+                    elif issubclass(self.__class__.__bases__[0], QWidget) and layout:
+                        self.setLayout(layout)
+                    else:
+                        warnings.warn(f"{self.__class__.__bases__[0]}, {parent=}: то с чем я еще не работаю")
 
     else:
         if isinstance(parameters, (QGridLayout, QHBoxLayout, QVBoxLayout)):
             parent.addLayout(parameters)
+        elif isinstance(parameters, QSpacerItem):
+            parent.addItem(parameters)
         else:
             parent.addWidget(parameters)
 
@@ -88,6 +98,17 @@ class Config:
     def flat(self, value):
         if issubclass(self.__class__.__bases__[0], QPushButton):
             self.setFlat(value)
+
+
+def menu_bar(self: 'QMainWindow', parameters: dict):
+    """
+    Установка меню через WrapperWidget
+
+    self = QMainWindow
+    parameters = {'menu': <class '__main__.WrapperMenu'>}
+    """
+    self.menu = parameters['menu']()
+    self.setMenuBar(self.menu)
 
 
 # def group_button(key, value, self, parent):
@@ -107,15 +128,22 @@ class Config:
 def config_widget(self, config, parent=None):
     """ Установка параметров для виджета и Layout"""
 
+    if action := config.get('action'):
+        set_action(self, action, parent)
+
     if alignment := config.get('alignment'):
-        # from modules.config import set_alignment
         set_alignment(self, alignment, parent)
+
+    if column := config.get('column'):
+        set_column(self, column, parent)
+
+    if header := config.get('header'):
+        set_header(self, header, parent)
 
     if flat := config.get('flat'):
         Config.flat(self, flat)
 
     if icon := config.get('icon'):
-        # from modules.config.Icon import set_icon
         set_icon(self, icon, parent, resource=config.get('resource', False))
 
     if margin := config.get('margin'):
@@ -127,9 +155,8 @@ def config_widget(self, config, parent=None):
             print("Переданно нестандартное кол-во параметров ")
 
     if size := config.get('size'):
-        # from modules.config.Size import set_size
         set_size(self, size, parent)
 
     if title := config.get('title'):
-        # from modules.config.Title import set_title
         set_title(self, title, parent)
+
