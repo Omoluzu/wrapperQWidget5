@@ -5,3 +5,4 @@ from .Header import set_header
 from .Icon import set_icon
 from .Size import set_size
 from .Title import set_title
+from .Tooltip import set_tooltip

@@ -160,3 +160,6 @@ def config_widget(self, config, parent=None):
     if title := config.get('title'):
         set_title(self, title, parent)
 
+    if tooltip := config.get('tooltip'):
+        set_tooltip(self, tooltip, parent)
+
