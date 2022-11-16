@@ -8,6 +8,7 @@
 - [flat](#flat)
 - [icon](#icon)
 - [size](#size)
+- [tooltip](#tooltip)
 
 
 ###### Пример: 
@@ -24,7 +25,8 @@ class WrapperButton(QPushButton):
             'icon': {  
                 "icon": "ico/check.png",  
                 "size": 50  
-            }  
+            },
+            'tooltip': "Этло выплывающая подсказка"
         }
 ```
 
@@ -83,4 +85,11 @@ class WrapperButton(QPushButton):
 "size": [x, y]
 "size": [xy]
 "size": xy
+```
+
+###### tooltip
+Высплывающая подсказка для кнопки. Принимает в себя строковое значение.
+**Пример:**
+```python
+"tooltip": "Это всплывающая подсказка"
 ```

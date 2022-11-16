@@ -19,7 +19,7 @@ except ImportError:
     from .modules.config import *
 
 
-__version__ = "0.2.9"
+__version__ = "0.2.10"
 __all__ = ['wrapper_widget', 'config_widget']
 
 
